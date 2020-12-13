@@ -58,6 +58,14 @@ pub fn get_from_map_test() {
     };
 }
 
+/// This function is used to add a user to the server data storage.
+/// Arguments:
+///     username: String => This is the username of the user to add.
+///     key: [u8; 32]    => This is the public key bytes to add.
+///     map: &Arc<Mutex<HashMap>>> => This is the storage collection to add the data to.
+/// Points of Failure:
+///     UsernameAlreadyExists => This error occurs when the user tries to add a user that already exists.
+///     CannotLockMutex       => This error occrs when the server cannot properly lock the mutex.
 pub fn add_to_map(username: types::Username, key: types::PublicKey, map: &Arc<Mutex<HashMap<types::Username, types::PublicKey>>>) -> Result<(), codes::ResponseCodes> {
     match map.lock() {
         Ok(mut guard) => {
