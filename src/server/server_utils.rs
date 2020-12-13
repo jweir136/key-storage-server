@@ -51,6 +51,11 @@ pub fn get_username(stream: &mut TcpStream) -> Result<types::Username, codes::Re
     }
 }
 
+/// This function is used to get the PublicKey bytes from the user.
+/// Arguments:
+///     stream: &mut TcpStream => This is the stream item that is used to communicate with the user.
+/// Points of Failure:
+///     CannotReadPublicKey => This error occurs anytime the stream cannot be read to the buffer.
 pub fn get_public_key(stream: &mut TcpStream) -> Result<types::PublicKey, codes::ResponseCodes> {
     let mut buff = [0 as u8; 32];
 
