@@ -25,3 +25,23 @@ pub fn get_user_request_type(stream: &mut TcpStream) -> Result<codes::RequestCod
         }
     }
 }
+
+pub fn get_username(stream: &mut TcpStream) -> Result<String, codes::ResponseCodes> {
+    let mut buff = [0 as u8; 256];
+
+    match stream.read(&mut buff) {
+        Ok(size) => {
+            match String::from_utf8(buff[0..size].to_vec()) {
+                Ok(username) => {
+                    Ok(username)
+                },
+                Err(_) => {
+                    Err(codes::ResponseCodes::CannotReadUsername)
+                }
+            }
+        },
+        Err(_) => {
+            Err(codes::ResponseCodes::CannotReadUsername)
+        }
+    }
+}
