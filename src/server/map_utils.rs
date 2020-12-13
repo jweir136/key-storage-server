@@ -57,3 +57,21 @@ pub fn get_from_map_test() {
         }
     };
 }
+
+pub fn add_to_map(username: types::Username, key: types::PublicKey, map: &Arc<Mutex<HashMap<types::Username, types::PublicKey>>>) -> Result<(), codes::ResponseCodes> {
+    match map.lock() {
+        Ok(mut guard) => {
+            match guard.insert(username, key) {
+                Some(_) => {
+                    Ok(())
+                },
+                None => {
+                    Err(codes::ResponseCodes::UsernameAlreadyExists)
+                }
+            }
+        },
+        Err(_) => {
+            Err(codes::ResponseCodes::CannotLockMutex)
+        }
+    }
+}
