@@ -69,12 +69,11 @@ pub fn get_from_map_test() {
 pub fn add_to_map(username: types::Username, key: types::PublicKey, map: &Arc<Mutex<HashMap<types::Username, types::PublicKey>>>) -> Result<(), codes::ResponseCodes> {
     match map.lock() {
         Ok(mut guard) => {
-            match guard.insert(username, key) {
-                Some(_) => {
-                    Ok(())
-                },
-                None => {
-                    Err(codes::ResponseCodes::UsernameAlreadyExists)
+            if (&guard).contains_key(&username) {
+                Err(codes::ResponseCodes::UsernameAlreadyExists)
+            } else {
+                match guard.insert(username, key) {
+                    _ => { Ok(()) }
                 }
             }
         },
@@ -82,4 +81,26 @@ pub fn add_to_map(username: types::Username, key: types::PublicKey, map: &Arc<Mu
             Err(codes::ResponseCodes::CannotLockMutex)
         }
     }
+}
+
+#[test]
+pub fn add_to_map_test() {
+    let map = HashMap::<types::Username, types::PublicKey>::new();
+    let arcmap = Arc::new(Mutex::new(map));
+
+    match add_to_map("Jake".to_string(), [0 as u8; 32], &arcmap.clone()) {
+        Ok(_) => {
+
+        },
+        Err(_) => {
+            panic!();
+        }
+    };
+
+    match add_to_map("Jake".to_string(), [0 as u8; 32], &arcmap.clone()) {
+        Ok(_) => { panic!(); },
+        Err(_) => {
+
+        }
+    };
 }
