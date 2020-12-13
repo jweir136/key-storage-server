@@ -2,7 +2,7 @@
 /// Valid requests are Add and Get.
 /// 'Add' means to add a new user to the key storage structure.
 /// 'Get' means to retrieve an existing user from the stucture.
-enum RequestCodes {
+pub enum RequestCodes {
     Add,
     Get
 }
@@ -16,7 +16,7 @@ enum RequestCodes {
 /// 'UsernameAlreadyExists' occurs when the user tries to add a user. This occurs when the given username is already being stored.
 /// 'CannotLockMutex' occurs when a Mutex type cannot be used (aka locked).
 /// 'CannotWriteToStream' occurs when the server cannot return a response to the user.
-enum ResponseCodes {
+pub enum ResponseCodes {
     Valid,                  // 200
     InvalidRequestType,     // 500
     CannotReadUsername,     // 501
