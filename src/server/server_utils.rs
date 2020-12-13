@@ -26,6 +26,11 @@ pub fn get_user_request_type(stream: &mut TcpStream) -> Result<codes::RequestCod
     }
 }
 
+/// This function retrieves the username from the connected user.
+/// Arguments:
+///     stream: &mut TcpStream => This is the stream item that is used to communicate with the user.
+/// Points of Failure:
+///     CannotReadUsername => This error occurs anytime the stream cannot be read or the given bytes cannot cannot be decoded to a valid utf8 string.
 pub fn get_username(stream: &mut TcpStream) -> Result<String, codes::ResponseCodes> {
     let mut buff = [0 as u8; 256];
 
