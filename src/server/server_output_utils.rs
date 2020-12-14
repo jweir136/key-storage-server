@@ -28,6 +28,16 @@ pub fn format_json(response: codes::ResponseCodes, out: Option<types::PublicKey>
     format!("{{ 'code':{}, 'response':{} }}", code, string_output)
 }
 
+#[test]
+fn format_json_test() {
+    let response = codes::ResponseCodes::Valid;
+    let key = [0 as u8; 32];
+
+    assert_eq!(format_json(response, Option::Some(key)), "{ 'code':200, 'response':[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] }");
+    assert_eq!(format_json(codes::ResponseCodes::InvalidRequestType, Option::None), "{ 'code':500, 'response':Invalid Request }");
+
+}
+
 /// This function is used to write output bytes to the user.
 /// Arguments:
 ///     stream: &mut TcpStream => This is the item used to represent the connection to the user.
