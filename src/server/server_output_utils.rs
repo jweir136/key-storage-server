@@ -28,6 +28,12 @@ pub fn format_json(response: codes::ResponseCodes, out: Option<types::PublicKey>
     format!("{{ 'code':{}, 'response':{} }}", code, string_output)
 }
 
+/// This function is used to write output bytes to the user.
+/// Arguments:
+///     stream: &mut TcpStream => This is the item used to represent the connection to the user.
+///     bytes: &[u8] => This is the bytes to write to the user.
+/// Points of Failure:
+///     CannotWriteToStream => This error occurs anytime the bytes cannot be written to the user.
 pub fn output_to_user(stream: &mut TcpStream, bytes: &[u8]) -> Result<(), codes::ResponseCodes> {
     match stream.write_all(bytes) {
         Ok(_) => {
