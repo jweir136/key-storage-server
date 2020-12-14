@@ -27,3 +27,14 @@ pub fn format_json(response: codes::ResponseCodes, out: Option<types::PublicKey>
     };
     format!("{{ 'code':{}, 'response':{} }}", code, string_output)
 }
+
+pub fn output_to_user(stream: &mut TcpStream, bytes: &[u8]) -> Result<(), codes::ResponseCodes> {
+    match stream.write_all(bytes) {
+        Ok(_) => {
+            Ok(())
+        },
+        Err(_) => {
+            Err(codes::ResponseCodes::CannotWriteToStream)
+        }
+    }
+}
